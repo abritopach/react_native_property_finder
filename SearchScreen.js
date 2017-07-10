@@ -15,7 +15,30 @@ class SearchScreen extends Component {
     static navigationOptions = {
         title: 'Property Finder',
     };
+
+    /*
+     Each React component has its own state object, which is used as a key-value store. Before a component is rendered
+     you must set the initial state.
+     */
+    constructor(props) {
+        super(props);
+        // Component has a state variable, with searchString set to an initial value of london.
+        this.state = {
+            searchString: 'london'
+        };
+    }
+
+    /*
+    Takes the value from the native browser event’s text property and uses it to update the component’s state.
+     */
+    onSearchTextChanged(event) {
+        console.log('onSearchTextChanged');
+        this.setState({ searchString: event.nativeEvent.text });
+        console.log(this.state.searchString);
+    }
+
     render() {
+        console.log('SearchPage.render');
         return (
             <View style={styles.container}>
                 <Text style={styles.description}>
@@ -25,7 +48,9 @@ class SearchScreen extends Component {
                     Search by place-name, postcode or search near your location.
                 </Text>
                 <View style={styles.flowRight}>
-                    <TextInput style={styles.searchInput} placeholder='Search via name or postcode'/>
+                    <TextInput style={styles.searchInput} value={this.state.searchString}
+                               onChange={this.onSearchTextChanged.bind(this)}
+                               placeholder='Search via name or postcode'/>
                     <TouchableHighlight style={styles.button} underlayColor='#99d9f4'>
                         <Text style={styles.buttonText}>Go</Text>
                     </TouchableHighlight>
