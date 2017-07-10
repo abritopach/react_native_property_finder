@@ -15,6 +15,8 @@ import {
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
+var SearchScreen = require('./SearchScreen');
+
 
 // Property Finder App extends React.Component, the basic building block of the React UI.
 export default class HomeScreen extends Component {
@@ -43,7 +45,7 @@ export default class HomeScreen extends Component {
 }
 
 const PropertyFinderApp = StackNavigator({
-  Home: { screen: HomeScreen },
+  Home: { screen: /*HomeScreen*/SearchScreen },
 });
 
 const styles = StyleSheet.create({
