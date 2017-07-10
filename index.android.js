@@ -13,8 +13,14 @@ import {
   Text,
   View
 } from 'react-native';
+import { StackNavigator } from 'react-navigation';
 
-export default class react_native_property_finder extends Component {
+
+// Property Finder App extends React.Component, the basic building block of the React UI.
+export default class HomeScreen extends Component {
+  static navigationOptions = {
+    title: 'Property Finder',
+  };
   render() {
     return (
       <View style={styles.container}>
@@ -28,10 +34,17 @@ export default class react_native_property_finder extends Component {
           Double tap R on your keyboard to reload,{'\n'}
           Shake or press menu button for dev menu
         </Text>
+        <Text style={styles.hello}>
+          Hello World (Again)
+        </Text>
       </View>
     );
   }
 }
+
+const PropertyFinderApp = StackNavigator({
+  Home: { screen: HomeScreen },
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -50,6 +63,11 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  hello: {
+    fontSize: 30,
+    textAlign: 'center',
+  }
 });
 
-AppRegistry.registerComponent('react_native_property_finder', () => react_native_property_finder);
+// AppRegistry defines the entry point to the application and provides the root component.
+AppRegistry.registerComponent('react_native_property_finder', () => PropertyFinderApp);
