@@ -24,7 +24,8 @@ class SearchScreen extends Component {
         super(props);
         // Component has a state variable, with searchString set to an initial value of london.
         this.state = {
-            searchString: 'london'
+            searchString: 'london',
+            isLoading: false
         };
     }
 
@@ -37,8 +38,24 @@ class SearchScreen extends Component {
         console.log(this.state.searchString);
     }
 
+    _executeQuery(query) {
+        console.log(query);
+        this.setState({ isLoading: true });
+    }
+
+    onSearchPressed() {
+        var query = urlForQueryAndPage('place_name', this.state.searchString, 1);
+        this._executeQuery(query);
+    }
+
     render() {
         console.log('SearchPage.render');
+
+        var spinner = this.state.isLoading ?
+            ( <ActivityIndicator
+                size='large'/> ) :
+            ( <View/>);
+
         return (
             <View style={styles.container}>
                 <Text style={styles.description}>
@@ -51,7 +68,8 @@ class SearchScreen extends Component {
                     <TextInput style={styles.searchInput} value={this.state.searchString}
                                onChange={this.onSearchTextChanged.bind(this)}
                                placeholder='Search via name or postcode'/>
-                    <TouchableHighlight style={styles.button} underlayColor='#99d9f4'>
+                    <TouchableHighlight style={styles.button} underlayColor='#99d9f4'
+                                        onPress={this.onSearchPressed.bind(this)}>
                         <Text style={styles.buttonText}>Go</Text>
                     </TouchableHighlight>
                 </View>
@@ -62,11 +80,30 @@ class SearchScreen extends Component {
                     </TouchableHighlight>
                 </View>
                 <Image source={require('./resources/house.png')} style={styles.image}/>
+                {spinner}
 
             </View>
         );
     }
 }
+
+function urlForQueryAndPage(key, value, pageNumber) {
+    var data = {
+        country: 'uk',
+        pretty: '1',
+        encoding: 'json',
+        listing_type: 'buy',
+        action: 'search_listings',
+        page: pageNumber
+    };
+    data[key] = value;
+
+    var querystring = Object.keys(data)
+        .map(key => key + '=' + encodeURIComponent(data[key]))
+        .join('&');
+
+    return 'http://api.nestoria.co.uk/api?' + querystring;
+};
 
 var styles = StyleSheet.create({
     description: {
