@@ -10,6 +10,8 @@ import {
     Text
 } from 'react-native';
 
+var PropertyDetailsScreen = require('./PropertyDetailsScreen');
+
 class SearchResultsScreen extends Component {
     static navigationOptions = {
         title: 'Results',
@@ -37,7 +39,17 @@ class SearchResultsScreen extends Component {
      This method locates the property that was tapped by the user.
      */
     rowPressed(listerURL) {
-        var property = this.props.listings.filter(prop => prop.lister_url === listerURL)[0];
+        //var property = this.props.listings.filter(prop => prop.lister_url === listerURL)[0];
+        var property = this.props.navigation.state.params.listings.filter(prop => prop.lister_url === listerURL)[0];
+        this.props.navigation.navigate('PropertyDetailsScreen', {property: property});
+
+        /*
+        this.props.navigator.push({
+            title: "Property",
+            component: PropertyView,
+            passProps: {property: property}
+        });
+        */
     }
 
     renderRow(rowData, sectionID, rowID) {
