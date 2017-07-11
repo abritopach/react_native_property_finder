@@ -11,6 +11,8 @@ import {
     Image
 } from 'react-native';
 
+var SearchResultsScreen = require('./SearchResultsScreen');
+
 class SearchScreen extends Component {
     static navigationOptions = {
         title: 'Property Finder',
@@ -64,6 +66,20 @@ class SearchScreen extends Component {
         this.setState({ isLoading: false , message: '' });
         if (response.application_response_code.substr(0, 1) === '1') {
             console.log('Properties found: ' + response.listings.length);
+            // The above code navigates to your newly added SearchResults component and passes in the listings from the
+            // API request. Using the push method ensures the search results are pushed onto the navigation stack, which
+            // means you’ll get a ‘Back’ button to return to the root.
+
+
+            this.props.navigation.navigate('SearchResultsScreen', { listings: response.listings });
+
+            /*
+            this.props.navigator.push({
+                title: 'Results',
+                component: SearchResultsScreen,
+                passProps: {listings: response.listings}
+            });
+            */
         } else {
             this.setState({ message: 'Location not recognized; please try again.'});
         }
