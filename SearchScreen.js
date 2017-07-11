@@ -94,6 +94,21 @@ class SearchScreen extends Component {
         this._executeQuery(query);
     }
 
+    onLocationPressed() {
+        navigator.geolocation.getCurrentPosition(
+                location => {
+                var search = location.coords.latitude + ',' + location.coords.longitude;
+                this.setState({ searchString: search });
+                var query = urlForQueryAndPage('centre_point', search, 1);
+                this._executeQuery(query);
+            },
+                error => {
+                this.setState({
+                    message: 'There was a problem with obtaining your location: ' + error
+                });
+            });
+    }
+
     render() {
         console.log('SearchPage.render');
 
@@ -123,7 +138,8 @@ class SearchScreen extends Component {
                 </View>
 
                 <View style={styles.flowRight}>
-                    <TouchableHighlight style={styles.button} underlayColor='#99d9f4'>
+                    <TouchableHighlight style={styles.button} underlayColor='#99d9f4'
+                                        onPress={this.onLocationPressed.bind(this)}>
                         <Text style={styles.buttonText}>Location</Text>
                     </TouchableHighlight>
                 </View>
