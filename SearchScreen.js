@@ -11,12 +11,16 @@ import {
     Image
 } from 'react-native';
 
+import { getLanguages } from 'react-native-i18n'
+
 var SearchResultsScreen = require('./SearchResultsScreen');
 
 class SearchScreen extends Component {
     static navigationOptions = {
         title: 'Property Finder',
     };
+
+    language: string;
 
     /*
      Each React component has its own state object, which is used as a key-value store. Before a component is rendered
@@ -31,6 +35,11 @@ class SearchScreen extends Component {
             isLoading: false,
             message: '' // Display a range of messages to the user.
         };
+
+        getLanguages().then(languages => {
+            this.language = languages[0];
+            console.log(languages) // ['en-US', 'en']
+        })
     }
 
     /*
@@ -90,7 +99,7 @@ class SearchScreen extends Component {
      Configures and initiates the search query. This should kick off when the ‘Go’ button is pressed.
     */
     onSearchPressed() {
-        var query = urlForQueryAndPage('place_name', this.state.searchString, 1);
+        var query = urlForQueryAndPage('place_name', this.state.searchString, 1, this.language);
         this._executeQuery(query);
     }
 
@@ -99,7 +108,7 @@ class SearchScreen extends Component {
                 location => {
                 var search = location.coords.latitude + ',' + location.coords.longitude;
                 this.setState({ searchString: search });
-                var query = urlForQueryAndPage('centre_point', search, 1);
+                var query = urlForQueryAndPage('centre_point', search, 1, this.language);
                 this._executeQuery(query);
             },
                 error => {
@@ -151,17 +160,30 @@ class SearchScreen extends Component {
     }
 }
 
+
 // Creates the query string based on the parameters in data. Following this, it transforms the data into the required
 // string format, name=value pairs separated by ampersands.
-function urlForQueryAndPage(key, value, pageNumber) {
+function urlForQueryAndPage(key, value, pageNumber, language) {
+
+    // Default DATA API UK
+
+    var url = 'http://api.nestoria.co.uk/api?';
+
     var data = {
-        country: 'uk',
-        pretty: '1',
-        encoding: 'json',
-        listing_type: 'buy',
-        action: 'search_listings',
-        page: pageNumber
-    };
+     country: 'uk',
+     pretty: '1',
+     encoding: 'json',
+     listing_type: 'buy',
+     action: 'search_listings',
+     page: pageNumber
+     };
+
+    // UPDATE Nestoria API data and url by device locale.
+    if ((language.indexOf('es') != -1) && (key == "centre_point")) {
+        data.country = 'es';
+        url = 'https://api.nestoria.es/api?';
+    }
+
     data[key] = value;
 
     var querystring = Object.keys(data)
@@ -171,7 +193,7 @@ function urlForQueryAndPage(key, value, pageNumber) {
 
     // Example request: http://api.nestoria.co.uk/api?country=uk&pretty=1&encoding=json&listing_type=buy&action=search_listings&page=1&place_name=london
 
-    return 'http://api.nestoria.co.uk/api?' + querystring;
+    return url + querystring;
 };
 
 var styles = StyleSheet.create({
