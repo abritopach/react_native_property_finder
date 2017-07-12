@@ -26,7 +26,7 @@ react-native run-ios
 
 ## Debug in Android Device
 
-* [Frappé]https://github.com/niftylettuce/frappe
+* [Frappé](https://github.com/niftylettuce/frappe)
 
 ## Requirements
  
