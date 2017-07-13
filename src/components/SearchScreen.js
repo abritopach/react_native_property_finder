@@ -152,7 +152,7 @@ class SearchScreen extends Component {
                         <Text style={styles.buttonText}>Location</Text>
                     </TouchableHighlight>
                 </View>
-                <Image source={require('./resources/house.png')} style={styles.image}/>
+                <Image source={require('./../../resources/house.png')} style={styles.image}/>
                 {spinner}
                 <Text style={styles.description}>{this.state.message}</Text>
             </View>
