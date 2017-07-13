@@ -11,7 +11,7 @@ import {
     Image
 } from 'react-native';
 
-import { getLanguages } from 'react-native-i18n'
+import I18n, { getLanguages } from 'react-native-i18n'
 
 var SearchResultsScreen = require('./SearchResultsScreen');
 
@@ -31,7 +31,7 @@ class SearchScreen extends Component {
         // Set the initial state.
         // Component has a state variable, with searchString set to an initial value of london.
         this.state = {
-            searchString: 'london',
+            searchString: 'Madrid',
             isLoading: false,
             message: '' // Display a range of messages to the user.
         };
@@ -131,10 +131,10 @@ class SearchScreen extends Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.description}>
-                    Search for houses to buy!
+                    {I18n.t('description1')}
                 </Text>
                 <Text style={styles.description}>
-                    Search by place-name, postcode or search near your location.
+                    {I18n.t('description2')}
                 </Text>
                 <View style={styles.flowRight}>
                     <TextInput style={styles.searchInput} value={this.state.searchString}
@@ -142,14 +142,14 @@ class SearchScreen extends Component {
                                placeholder='Search via name or postcode'/>
                     <TouchableHighlight style={styles.button} underlayColor='#99d9f4'
                                         onPress={this.onSearchPressed.bind(this)}>
-                        <Text style={styles.buttonText}>Go</Text>
+                        <Text style={styles.buttonText}>{I18n.t('btnGo')}</Text>
                     </TouchableHighlight>
                 </View>
 
                 <View style={styles.flowRight}>
                     <TouchableHighlight style={styles.button} underlayColor='#99d9f4'
                                         onPress={this.onLocationPressed.bind(this)}>
-                        <Text style={styles.buttonText}>Location</Text>
+                        <Text style={styles.buttonText}>{I18n.t('btnLocation')}</Text>
                     </TouchableHighlight>
                 </View>
                 <Image source={require('./../../resources/house.png')} style={styles.image}/>
@@ -179,7 +179,7 @@ function urlForQueryAndPage(key, value, pageNumber, language) {
      };
 
     // UPDATE Nestoria API data and url by device locale.
-    if ((language.indexOf('es') != -1) && (key == "centre_point")) {
+    if ((language.indexOf('es') != -1) /* && (key == "centre_point")*/) {
         data.country = 'es';
         url = 'https://api.nestoria.es/api?';
     }
@@ -246,5 +246,23 @@ var styles = StyleSheet.create({
         height: 138
     }
 });
+
+// Enable fallbacks if you want `en-US` and `en-GB` to fallback to `en`
+I18n.fallbacks = true
+
+I18n.translations = {
+    en: {
+        description1: 'Search for houses to buy!',
+        description2: 'Search by place-name, postcode or search near your location.',
+        btnGo: 'Go',
+        btnLocation: 'Location'
+    },
+    es: {
+        description1: 'Busca casas para comprar!',
+        description2: 'Busca por nombre, código postal o cerca de tu localización',
+        btnGo: 'Buscar',
+        btnLocation: 'Localizar'
+    }
+}
 
 module.exports = SearchScreen;
