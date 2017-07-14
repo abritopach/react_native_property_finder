@@ -15,6 +15,8 @@ import I18n, { getLanguages } from 'react-native-i18n'
 
 var SearchResultsScreen = require('./SearchResultsScreen');
 
+var NetStoriaAPI = require('../services/NestoriaAPI');
+
 class SearchScreen extends Component {
     static navigationOptions = {
         title: 'Property Finder',
@@ -51,27 +53,7 @@ class SearchScreen extends Component {
         console.log(this.state.searchString);
     }
 
-    /*
-    Will eventually run the query, but for now it simply logs a message to the console and sets isLoading
-    appropriately so the UI can show the new state.
-    */
-    _executeQuery(query) {
-        console.log(query);
-        this.setState({ isLoading: true });
-        // This makes use of the fetch function, which is part of the Web API, and provides a vastly improved API
-        // versus XMLHttpRequest. The asynchronous response is returned as a promise, with the success path parsing
-        // the JSON and supplying it to _handleResponse.
-        fetch(query)
-            .then(response => response.json())
-            .then(json => this._handleResponse(json.response))
-            .catch(error =>
-                this.setState({
-                    isLoading: false,
-                    message: 'Something bad happened ' + error
-                }));
-    }
-
-    _handleResponse(response) {
+    handleResponse(response) {
         this.setState({ isLoading: false , message: '' });
         if (response.application_response_code.substr(0, 1) === '1') {
             console.log('Properties found: ' + response.listings.length);
@@ -99,17 +81,36 @@ class SearchScreen extends Component {
      Configures and initiates the search query. This should kick off when the ‘Go’ button is pressed.
     */
     onSearchPressed() {
-        var query = urlForQueryAndPage('place_name', this.state.searchString, 1, this.language);
-        this._executeQuery(query);
+
+        this.setState({ isLoading: true });
+        // The asynchronous response is returned as a promise, with the success path parsing
+        // the JSON and supplying it to handleResponse.
+        NetStoriaAPI.getResults('place_name', this.state.searchString, 1, this.language)
+            .then(response => response.json())
+            .then(json => this.handleResponse(json.response))
+            .catch(error =>
+                this.setState({
+                    isLoading: false,
+                    message: 'Something bad happened ' + error
+                }));
     }
 
     onLocationPressed() {
         navigator.geolocation.getCurrentPosition(
                 location => {
                 var search = location.coords.latitude + ',' + location.coords.longitude;
-                this.setState({ searchString: search });
-                var query = urlForQueryAndPage('centre_point', search, 1, this.language);
-                this._executeQuery(query);
+                this.setState({ isLoading: true, searchString: search });
+
+                // The asynchronous response is returned as a promise, with the success path parsing
+                // the JSON and supplying it to handleResponse.
+                NetStoriaAPI.getResults('centre_point', search, 1, this.language)
+                    .then(response => response.json())
+                    .then(json => this.handleResponse(json.response))
+                    .catch(error =>
+                        this.setState({
+                            isLoading: false,
+                            message: 'Something bad happened ' + error
+                        }));
             },
                 error => {
                 this.setState({
@@ -159,42 +160,6 @@ class SearchScreen extends Component {
         );
     }
 }
-
-
-// Creates the query string based on the parameters in data. Following this, it transforms the data into the required
-// string format, name=value pairs separated by ampersands.
-function urlForQueryAndPage(key, value, pageNumber, language) {
-
-    // Default DATA API UK
-
-    var url = 'http://api.nestoria.co.uk/api?';
-
-    var data = {
-     country: 'uk',
-     pretty: '1',
-     encoding: 'json',
-     listing_type: 'buy',
-     action: 'search_listings',
-     page: pageNumber
-     };
-
-    // UPDATE Nestoria API data and url by device locale.
-    if ((language.indexOf('es') != -1) /* && (key == "centre_point")*/) {
-        data.country = 'es';
-        url = 'https://api.nestoria.es/api?';
-    }
-
-    data[key] = value;
-
-    var querystring = Object.keys(data)
-        .map(key => key + '=' + encodeURIComponent(data[key]))
-        .join('&');
-
-
-    // Example request: http://api.nestoria.co.uk/api?country=uk&pretty=1&encoding=json&listing_type=buy&action=search_listings&page=1&place_name=london
-
-    return url + querystring;
-};
 
 var styles = StyleSheet.create({
     description: {
