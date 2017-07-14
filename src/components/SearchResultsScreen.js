@@ -18,7 +18,7 @@ class SearchResultsScreen extends Component {
     };
 
     constructor(props) {
-        console.log("SearchResultsScreen");
+        //console.log("SearchResultsScreen");
         super(props);
         // When constructing the data source, you provide a function that compares the identity of a pair of rows.
         // The ListView uses this during the reconciliation process, in order to determine the changes in the list data.

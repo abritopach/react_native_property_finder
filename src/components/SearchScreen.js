@@ -40,7 +40,7 @@ class SearchScreen extends Component {
 
         getLanguages().then(languages => {
             this.language = languages[0];
-            console.log(languages) // ['en-US', 'en']
+            //console.log(languages) // ['en-US', 'en']
         })
     }
 
@@ -48,15 +48,15 @@ class SearchScreen extends Component {
     Takes the value from the native browser event’s text property and uses it to update the component’s state.
      */
     onSearchTextChanged(event) {
-        console.log('onSearchTextChanged');
+        //console.log('onSearchTextChanged');
         this.setState({ searchString: event.nativeEvent.text });
-        console.log(this.state.searchString);
+        //console.log(this.state.searchString);
     }
 
     handleResponse(response) {
         this.setState({ isLoading: false , message: '' });
         if (response.application_response_code.substr(0, 1) === '1') {
-            console.log('Properties found: ' + response.listings.length);
+            //console.log('Properties found: ' + response.listings.length);
             // The above code navigates to your newly added SearchResults component and passes in the listings from the
             // API request. Using the push method ensures the search results are pushed onto the navigation stack, which
             // means you’ll get a ‘Back’ button to return to the root.
@@ -120,7 +120,7 @@ class SearchScreen extends Component {
     }
 
     render() {
-        console.log('SearchPage.render');
+        //console.log('SearchPage.render');
 
         // Adds an activity indicator or an empty view, depending on the component’s isLoading state. Because the entire
         // component is rendered each time, you are free to mix JSX and JavaScript logic.
