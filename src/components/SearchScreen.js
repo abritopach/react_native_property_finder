@@ -11,7 +11,7 @@ import {
     Image
 } from 'react-native';
 
-import I18n, { getLanguages } from 'react-native-i18n'
+import I18n, { getLanguages } from 'react-native-i18n';
 
 var SearchResultsScreen = require('./SearchResultsScreen');
 
@@ -220,13 +220,19 @@ I18n.translations = {
         description1: 'Search for houses to buy!',
         description2: 'Search by place-name, postcode or search near your location.',
         btnGo: 'Go',
-        btnLocation: 'Location'
+        btnLocation: 'Location',
+        bedrooms: 'bedrooms',
+        bathroom: 'bathroom',
+        bathrooms: 'bathrooms'
     },
     es: {
         description1: 'Busca casas para comprar!',
         description2: 'Busca por nombre, código postal o cerca de tu localización',
         btnGo: 'Buscar',
-        btnLocation: 'Localizar'
+        btnLocation: 'Localizar',
+        bedrooms: 'dormitorios',
+        bathroom: 'baño',
+        bathrooms: 'baños'
     }
 }
 

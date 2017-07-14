@@ -21,10 +21,10 @@ class PropertyDetailsScreen extends Component {
         //var property = this.props.property;
         var property = this.props.navigation.state.params.property;
         console.log(property);
-        var stats = property.bedroom_number + ' dormitorios ' + property.property_type;
+        var stats = property.bedroom_number + ' ' + I18n.t('bedrooms') + ' ' + property.property_type;
         if (property.bathroom_number) {
             stats += ', ' + property.bathroom_number + ' ' + (property.bathroom_number > 1
-                    ? 'baños' : 'baño');
+                    ? I18n.t('bathrooms') : I18n.t('bathroom'));
         }
 
         var price = property.price_formatted.split(' ')[0];
@@ -77,22 +77,6 @@ var styles = StyleSheet.create({
         color: '#656565'
     }
 });
-
-// Enable fallbacks if you want `en-US` and `en-GB` to fallback to `en`
-I18n.fallbacks = true
-
-I18n.translations = {
-    en: {
-        bedrooms: 'bedrooms',
-        bathroom: 'bathroom',
-        bathrooms: 'bathrooms'
-    },
-    es: {
-        bedrooms: 'dormitorios',
-        bathroom: 'baño',
-        bathrooms: 'baños',
-    }
-}
 
 module.exports = PropertyDetailsScreen;
 
