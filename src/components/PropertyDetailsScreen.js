@@ -20,10 +20,11 @@ class PropertyDetailsScreen extends Component {
 
         //var property = this.props.property;
         var property = this.props.navigation.state.params.property;
-        var stats = property.bedroom_number + ' ' + I18n.t('bedrooms') + ' ' + property.property_type;
+        console.log(property);
+        var stats = property.bedroom_number + ' dormitorios ' + property.property_type;
         if (property.bathroom_number) {
             stats += ', ' + property.bathroom_number + ' ' + (property.bathroom_number > 1
-                    ? I18n.t('bathrooms') : I18n.t('bathroom'));
+                    ? 'baños' : 'baño');
         }
 
         var price = property.price_formatted.split(' ')[0];
