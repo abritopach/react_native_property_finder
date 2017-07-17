@@ -10,11 +10,15 @@ import {
     Text
 } from 'react-native';
 
-var PropertyDetailsScreen = require('./PropertyDetailsScreen');
+import styles from './SearchResultsScreenStyles';
+
+import I18n from 'react-native-i18n';
+
+var PropertyDetailsScreen = require('./../property-details-screen/PropertyDetailsScreen');
 
 class SearchResultsScreen extends Component {
     static navigationOptions = {
-        title: 'Results',
+        title: I18n.t('searchResultsScreenTitle'),
     };
 
     constructor(props) {
@@ -85,33 +89,5 @@ class SearchResultsScreen extends Component {
     }
 
 }
-
-var styles = StyleSheet.create({
-    thumb: {
-        width: 80,
-        height: 80,
-        marginRight: 10
-    },
-    textContainer: {
-        flex: 1
-    },
-    separator: {
-        height: 1,
-        backgroundColor: '#dddddd'
-    },
-    price: {
-        fontSize: 25,
-        fontWeight: 'bold',
-        color: '#48BBEC'
-    },
-    title: {
-        fontSize: 20,
-        color: '#656565'
-    },
-    rowContainer: {
-        flexDirection: 'row',
-        padding: 10
-    }
-});
 
 module.exports = SearchResultsScreen;

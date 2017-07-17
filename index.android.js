@@ -15,9 +15,9 @@ import {
 } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 
-var SearchScreen = require('./src/components/SearchScreen');
-var SearchResultsScreen = require('./src/components/SearchResultsScreen');
-var PropertyDetailsScreen = require('./src/components/PropertyDetailsScreen');
+var SearchScreen = require('./src/components/search-screen/SearchScreen');
+var SearchResultsScreen = require('./src/components/search-results-screen/SearchResultsScreen');
+var PropertyDetailsScreen = require('./src/components/property-details-screen/PropertyDetailsScreen');
 
 
 // Property Finder App extends React.Component, the basic building block of the React UI.

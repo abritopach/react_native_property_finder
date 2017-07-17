@@ -13,13 +13,45 @@ import {
 
 import I18n, { getLanguages } from 'react-native-i18n';
 
-var SearchResultsScreen = require('./SearchResultsScreen');
+import styles from './SearchScreenStyles';
 
-var NetStoriaAPI = require('../services/NestoriaAPI');
+// Enable fallbacks if you want `en-US` and `en-GB` to fallback to `en`
+I18n.fallbacks = true
+
+I18n.translations = {
+    en: {
+        description1: 'Search for houses to buy!',
+        description2: 'Search by place-name, postcode or search near your location.',
+        btnGo: 'Go',
+        btnLocation: 'Location',
+        bedrooms: 'bedrooms',
+        bathroom: 'bathroom',
+        bathrooms: 'bathrooms',
+        searchScreenTitle: 'Property Finder',
+        searchResultsScreenTitle: 'Results',
+        propertyDetailsScreenTitle: 'Property'
+    },
+    es: {
+        description1: 'Busca casas para comprar!',
+        description2: 'Busca por nombre, código postal o cerca de tu localización',
+        btnGo: 'Buscar',
+        btnLocation: 'Localizar',
+        bedrooms: 'dormitorios',
+        bathroom: 'baño',
+        bathrooms: 'baños',
+        searchScreenTitle: 'Buscador de propiedades',
+        searchResultsScreenTitle: 'Resultados',
+        propertyDetailsScreenTitle: 'Propiedad'
+    }
+}
+
+var SearchResultsScreen = require('./../search-results-screen/SearchResultsScreen');
+
+var NetStoriaAPI = require('../../services/NestoriaAPI');
 
 class SearchScreen extends Component {
     static navigationOptions = {
-        title: 'Property Finder',
+        title: I18n.t('searchScreenTitle'),
     };
 
     language: string;
@@ -153,86 +185,11 @@ class SearchScreen extends Component {
                         <Text style={styles.buttonText}>{I18n.t('btnLocation')}</Text>
                     </TouchableHighlight>
                 </View>
-                <Image source={require('./../../resources/house.png')} style={styles.image}/>
+                <Image source={require('./../../../resources/house.png')} style={styles.image}/>
                 {spinner}
                 <Text style={styles.description}>{this.state.message}</Text>
             </View>
         );
-    }
-}
-
-var styles = StyleSheet.create({
-    description: {
-        marginBottom: 20,
-        fontSize: 18,
-        textAlign: 'center',
-        color: '#656565'
-    },
-    container: {
-        padding: 30,
-        marginTop: 65,
-        alignItems: 'center'
-    },
-    flowRight: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        alignSelf: 'stretch'
-    },
-    buttonText: {
-        fontSize: 18,
-        color: 'white',
-        alignSelf: 'center'
-    },
-    button: {
-        height: 36,
-        flex: 1,
-        flexDirection: 'row',
-        backgroundColor: '#48BBEC',
-        borderColor: '#48BBEC',
-        borderWidth: 1,
-        borderRadius: 8,
-        marginBottom: 10,
-        alignSelf: 'stretch',
-        justifyContent: 'center'
-    },
-    searchInput: {
-        height: 36,
-        padding: 4,
-        marginRight: 5,
-        flex: 4,
-        fontSize: 18,
-        borderWidth: 1,
-        borderColor: '#48BBEC',
-        borderRadius: 8,
-        color: '#48BBEC'
-    },
-    image: {
-        width: 217,
-        height: 138
-    }
-});
-
-// Enable fallbacks if you want `en-US` and `en-GB` to fallback to `en`
-I18n.fallbacks = true
-
-I18n.translations = {
-    en: {
-        description1: 'Search for houses to buy!',
-        description2: 'Search by place-name, postcode or search near your location.',
-        btnGo: 'Go',
-        btnLocation: 'Location',
-        bedrooms: 'bedrooms',
-        bathroom: 'bathroom',
-        bathrooms: 'bathrooms'
-    },
-    es: {
-        description1: 'Busca casas para comprar!',
-        description2: 'Busca por nombre, código postal o cerca de tu localización',
-        btnGo: 'Buscar',
-        btnLocation: 'Localizar',
-        bedrooms: 'dormitorios',
-        bathroom: 'baño',
-        bathrooms: 'baños'
     }
 }
 
